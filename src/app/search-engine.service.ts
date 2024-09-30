@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {BehaviorSubject, catchError, map, Observable, take} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../environments/environment";
+import {Brand, Product} from "./type";
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,29 @@ export class SearchEngineService {
   showLoader = new BehaviorSubject(false);
   showLoaderText = new BehaviorSubject('');
 
+  RESULT_PRODUCT_COUNT : number = 0;
+
+  RESULT_PRODUCT_LIST = new BehaviorSubject<Product[]>([]);
+
+  RESULT_BRAND_LIST = new BehaviorSubject<Brand[]>([]);
+
   constructor(public http: HttpClient) {}
+
+  get resultProductList(){
+    return this.RESULT_PRODUCT_LIST.getValue();
+  }
+
+  set resultProductList(value: any) {
+    this.RESULT_PRODUCT_LIST.next(value);
+  }
+
+  get resultBrandList(){
+    return this.RESULT_BRAND_LIST.getValue();
+  }
+
+  set resultBrandList(value: any) {
+    this.RESULT_BRAND_LIST.next(value);
+  }
 
   updateLoader(value: boolean){
     this.showLoader.next(value);

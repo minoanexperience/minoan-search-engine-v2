@@ -18,47 +18,6 @@ import {SearchEngineService} from "./search-engine.service";
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnInit{
+export class AppComponent {
   title = 'searchEngine';
-  loader = false;
-  productsList: Product[] = [];
-  brandList: Brand[] = [] = brandList;
-
-  ngOnInit() {
-    this.onSearchProducts('king size bed');
-  }
-
-  constructor(public searchService: SearchEngineService) {}
-
-
-  /**
-   * search product based on query
-   * @param query
-   */
-  onSearchProducts(query: string) {
-    if (!this.loader) {
-      this.searchService.updateLoader(true);
-      this.searchService.updateLoaderText('Hang tight, we are fetching products for you....')
-      const requestBody = {query};
-      this.loader = true;
-      this.searchService.getSearchedProducts(requestBody).subscribe({
-        next: (response: any) => {
-          this.productsList = response.results;
-          // this.brandList = response?.brands;
-          this.loader = false;
-          this.searchService.updateLoader(false);
-          this.searchService.updateLoaderText('');
-
-        },
-        error: (err:any) => {
-          this.loader = false;
-          console.log(err);
-          this.searchService.updateLoader(false);
-          this.searchService.updateLoaderText('');
-        }
-      })
-    }
-  }
-
-
 }

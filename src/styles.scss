@@ -1,10 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
-//@font-face {
-//  font-family: 'itc_souvenir_stdlight';
-//  src: url('src/assets/souvenirstd-light-webfont.woff2') format('woff2');
-//  font-weight: 300;
-//  font-style: normal;
-//}
+@font-face {
+  font-family: 'itc_souvenir_stdlight';
+  src: url('assets/souvenirstd-light-webfont.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Helvetica Neue md';
+  src:url("assets/HelveticaNeue-Medium-11.3544c501d5c407fcb906.ttf");
+  font-style: normal;
+}
 
 * {
   margin: 0;
@@ -13,6 +18,11 @@
   -moz-font-smoothing: antialiased;
   font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  .prevent-select {
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+  }
   outline: none;
 }
 
