@@ -1,0 +1,293 @@
+@use "sass:math";
+/** Box Shadow Mixins **/
+
+/** Box Shadow Mixins **/
+@mixin box-shadow($top, $left, $blur, $color, $inset: "") {
+  -webkit-box-shadow: $top $left $blur $color #{$inset};
+  -moz-box-shadow: $top $left $blur $color #{$inset};
+  box-shadow: $top $left $blur $color #{$inset};
+}
+
+/** Transition **/
+/*@include transition(background-color 1s .5s, color 2s);*/
+@mixin transition($transition...) {
+  -moz-transition: $transition;
+  -o-transition: $transition;
+  -webkit-transition: $transition;
+  transition: $transition;
+}
+
+@mixin transition-property($property...) {
+  -moz-transition-property: $property;
+  -o-transition-property: $property;
+  -webkit-transition-property: $property;
+  transition-property: $property;
+}
+
+@mixin transition-duration($duration...) {
+  -moz-transition-property: $duration;
+  -o-transition-property: $duration;
+  -webkit-transition-property: $duration;
+  transition-property: $duration;
+}
+
+@mixin transition-timing-function($timing...) {
+  -moz-transition-timing-function: $timing;
+  -o-transition-timing-function: $timing;
+  -webkit-transition-timing-function: $timing;
+  transition-timing-function: $timing;
+}
+
+@mixin transition-delay($delay...) {
+  -moz-transition-delay: $delay;
+  -o-transition-delay: $delay;
+  -webkit-transition-delay: $delay;
+  transition-delay: $delay;
+}
+
+@mixin dib {
+  display: inline-block;
+  *display: inline;
+  zoom: 1;
+}
+
+@mixin vat {
+  vertical-align: top;
+}
+
+@mixin vam {
+  vertical-align: middle;
+}
+@mixin trans2s {
+  transition: all 0.2s;
+  -moz-transition: all 0.2s;
+  -webkit-transition: all 0.2s;
+  -o-transition: all 0.2s;
+}
+@mixin trans3s {
+  transition:0.3s ease-in-out;
+  -moz-transition:0.3s ease-in-out;
+  -webkit-transition:0.3s ease-in-out;
+  -o-transition:0.3s ease-in-out;
+}
+
+@mixin transwh3 {
+  transition: width 0.5s, height 0.5s;
+  -moz-transition: width 0.5s, height 0.5s;
+  -webkit-transition: width 0.5s, height 0.5s;
+  -o-transition: width 0.5s, height 0.5s;
+}
+
+@mixin trans4s {
+  transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+}
+
+@mixin trans5 {
+  transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+  -o-transition: all 0.5s;
+}
+
+@mixin bold {
+  font-weight: 700;
+}
+
+@mixin medium {
+  font-weight: 500;
+}
+
+@mixin uppercase {
+  text-transform: uppercase;
+}
+
+@mixin a_c {
+  position: absolute;
+  right: 0;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+@mixin dib {
+  display: inline-block;
+}
+
+@mixin dib100 {
+  display: inline-block;
+  width: 100%;
+}
+
+@mixin fstart {
+  display: flex;
+  justify-content: flex-start;
+}
+
+@mixin fend {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+@mixin fcol {
+  flex-direction: column;
+}
+
+@mixin fcenter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin v_m {
+  vertical-align: middle;
+}
+
+/*Font size mixin*/
+@mixin remy($pxsize) {
+  font-size: math.div($pxsize, 16) + rem;
+}
+
+@mixin transition2s{
+  transition: 0.2s all ease-in-out;
+}
+
+
+/* responeive mixin & varibale */
+
+
+$phones: 480px;
+$phonem: 599px;
+$phonel: 767px;
+$tabm: 991px;
+$tabland:1024px;
+$tabv: 1100px;
+$tabv-min: 1100px;
+$tabl: 1200px;
+$desk: 1400px;
+$phonel-m: 768px;
+$phone-sm: 365px;
+$showroomresponsive-lg:1200px;
+$showroomresponsive: 1079px;
+
+@mixin dsk-tab {
+  @media (min-width: #{$tabm}),  (max-width: #{$tabl}) {
+    @content;
+  }
+}
+
+@mixin tab-phn {
+  @media (min-width: #{$tabl}),  (max-width: #{$phonel}) {
+    @content;
+  }
+}
+
+@mixin phonem {
+  @media (max-width: #{$phonem}) {
+    @content;
+  }
+}
+@mixin tabland {
+  @media (max-width: #{$tabland}) {
+    @content;
+  }
+}
+@mixin tabl {
+  @media (max-width: #{$tabl}) {
+    @content;
+  }
+}
+@mixin tabm {
+  @media (max-width: #{$tabm}) {
+    @content;
+  }
+}
+
+@mixin tabv {
+  @media (max-width: #{$tabv}) {
+    @content;
+  }
+}
+
+@mixin tabv-min {
+  @media (min-width: #{$tabv-min}) {
+    @content;
+  }
+}
+
+
+@mixin phonel {
+  @media (max-width: #{$phonel}) {
+    @content;
+  }
+}
+
+@mixin phones {
+  @media (max-width: #{$phones}) {
+    @content;
+  }
+}
+
+@mixin phone-sm {
+  @media (max-width: #{$phone-sm}) {
+    @content;
+  }
+}
+
+@mixin desk {
+  @media (max-width: #{$desk}) {
+    @content;
+  }
+}
+
+@mixin phonem-m {
+  @media (min-width: #{$phonel}) {
+    @content;
+  }
+}
+
+@mixin tabl-m {
+  @media (min-width: #{$tabl}) {
+    @content;
+  }
+}
+@mixin tabl-v {
+  @media (min-width: #{$tabm}) {
+    @content;
+  }
+}
+
+@mixin phonel-m {
+  @media (min-width: #{$phonel-m}) {
+    @content;
+  }
+}
+
+@mixin showroomresponsive {
+  @media (max-width: #{$showroomresponsive}) {
+    @content;
+  }
+}
+
+@mixin showroomresponsive-lg {
+  @media (max-width: #{$showroomresponsive-lg}) {
+    @content;
+  }
+}
+
+
+
+
+@keyframes ripple {
+  0%   {opacity: 0; }
+  50% {opacity: 1;}
+  100% {opacity: 0; }
+}
+
+@mixin background-opacity($color, $opacity: 0.3) {
+  background: rgba($color, $opacity);
+}
