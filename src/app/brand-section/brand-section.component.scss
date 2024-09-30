@@ -152,7 +152,7 @@
     .seprater{
       height:16px;
       width:1px;
-      background:#DC5A4B-300;
+      background:#DC5A4B;
       margin: 0 8px;
       display: inline-flex;
     }
@@ -185,7 +185,7 @@
   .custom-input-1{
     display: inline-block;
     width: 95%;
-    background-color: FFFFFF;
+    background-color: #FFFFFF;
     height: 56px;
     padding: 0 28px;
     margin: 0 1rem;
@@ -211,13 +211,33 @@
     border: none;
     background-color: #f7f7f7;
     &:hover {
-      border-color: FFFFFF;
+      border-color: #FFFFFF;
+      svg path{
+        stroke: #DC5A4B;
+      }
       //box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.5);
     }
     &:focus{
       border: none;
       //  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.5);
     }
+  }
+  .cross_btn{
+    position: absolute;
+    width:24px;
+    height:24px;
+    right:80px;
+    top: 15px;
+    border: none;
+    background: none;
+    &:hover{
+      svg path{
+        stroke: #DC5A4B;
+      }
+    }
+
+    //opacity: 0;
+    //visibility:hidden;
   }
 }
 .fg-inner{

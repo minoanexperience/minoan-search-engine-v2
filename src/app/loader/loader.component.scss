@@ -17,7 +17,7 @@
   width: 90px;
   height: 90px;
   z-index: 1;
-  background:url("/assets/images/loader_logo.svg") no-repeat;
+  background:url("assets/loader_logo.svg") no-repeat;
   background-size: contain;
   background-position: center;
   /* animation: spinning 1.5s infinite ease-in-out; */
@@ -328,11 +328,11 @@
   text-align: center;
   color: #444444;
   margin-top: 20px;
-  &.for_autologin{
-    font-weight: 400;
-    line-height: 29px;
-    margin-top: 34px;
-  }
+  font-weight: 400;
+  line-height: 29px;
+  font-weight: 400;
+  line-height: 29px;
+
 }
 
 .loader_positioning{
