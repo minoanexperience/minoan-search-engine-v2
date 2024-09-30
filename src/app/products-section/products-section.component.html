@@ -11,7 +11,7 @@
 <!--  </div>-->
   <!--Content-->
   <div class="product_carousel_wrapper">
-    <div class="container">
+    <div *ngIf="productListLength" class="container">
       <div class="row">
         @for (product of productsList | slice: skip : page * limit; track product.ID){
           <div class="col-3">

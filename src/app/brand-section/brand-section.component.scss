@@ -179,3 +179,62 @@
 .brand-section{
   margin-top: 5rem;
 }
+.search-products{
+  position: relative;
+  margin-bottom: 2rem;
+  .custom-input-1{
+    display: inline-block;
+    width: 95%;
+    background-color: FFFFFF;
+    height: 56px;
+    padding: 0 28px;
+    margin: 0 1rem;
+    //box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.5);
+    &::placeholder{
+      font-style: normal;
+      font-weight: 400;
+      line-height: 21px;
+      color: #888888;
+    }
+    &:focus{
+      border: none;
+    }
+  }
+  .search-icons-button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    min-width: 54px;
+    padding: 17px 16px 17px;
+    height: 100%;
+    display: inline-flex;
+    border: none;
+    background-color: #f7f7f7;
+    &:hover {
+      border-color: FFFFFF;
+      //box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.5);
+    }
+    &:focus{
+      border: none;
+      //  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.5);
+    }
+  }
+}
+.fg-inner{
+  display: flex;
+  align-items: center;
+  margin-right: 2rem;
+  justify-content: space-between;
+}
+.form-control:focus {
+  color: var(--bs-body-color);
+  background-color: var(--bs-body-bg);
+  border: none;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+@media (max-width: 499px) {
+  .results {
+    grid-template-columns: 1fr;
+  }
+}
