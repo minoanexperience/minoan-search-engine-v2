@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {NgClass, NgIf} from "@angular/common";
 
@@ -17,7 +17,7 @@ export class HeaderComponent {
   @Output() seacrhItem = new EventEmitter<any>();
 
   searchKeyword : string = ''
-  isArrayListEmpty: boolean = true;
+
 
   /**
    * Event fired when you press Enter in search box
@@ -47,7 +47,6 @@ export class HeaderComponent {
    */
   removeFilter(event: any){
     this.searchKeyword = '';
-    console.log(this.searchKeyword)
   }
 
 
@@ -55,8 +54,7 @@ export class HeaderComponent {
    *
    */
   searchByKeyword(): void {
-    this.isArrayListEmpty = false;
     this.seacrhItem.emit(this.searchKeyword);
-    // console.log('search', this.searchKeyword);
+    this.searchKeyword = '';
   }
 }
