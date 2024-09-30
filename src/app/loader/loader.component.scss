@@ -9,32 +9,31 @@
   background-color:rgba(255,255,255,0.8);
   backdrop-filter: blur(1px);
 }
-.loader1 {
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%,-50%) translateZ(0);
-  top: 50%;
-  width: 90px;
-  height: 90px;
-  z-index: 1;
-  background:url("assets/loader_logo.svg") no-repeat;
-  background-size: contain;
-  background-position: center;
-  /* animation: spinning 1.5s infinite ease-in-out; */
-
-  &:after {
-    content: "";
-    position: absolute;
-    width: 120px;
-    height: 120px;
-    background-color: rgba(0,0,0,0);
-    border-radius: 100%;
-    margin: -15px;
-    box-shadow: 0 4px 0 0 #1A4B5B;
-    transition: all 1s linear;
-    animation: loader1 1s linear infinite;
-  }
-}
+//.loader1 {
+//  position: absolute;
+//  left: 50%;
+//  transform: translate(-50%,-50%) translateZ(0);
+//  top: 50%;
+//  width: 90px;
+//  height: 90px;
+//  z-index: 1;
+//  background-size: contain;
+//  background: url("assets/loader_logo.svg") no-repeat center;
+//  /* animation: spinning 1.5s infinite ease-in-out; */
+//
+//  &:after {
+//    content: "";
+//    position: absolute;
+//    width: 120px;
+//    height: 120px;
+//    background-color: rgba(0,0,0,0);
+//    border-radius: 100%;
+//    margin: -15px;
+//    box-shadow: 0 4px 0 0 #1A4B5B;
+//    transition: all 1s linear;
+//    animation: loader1 1s linear infinite;
+//  }
+//}
 
 
 @keyframes spinning {
@@ -73,16 +72,12 @@
   margin-bottom:0px;
   -webkit-animation: dotStretching 1s infinite ease-in;
   animation: dotStretching 1s infinite ease-in;
-
   &:before, &:after {
     content: '';
     display: inline-block;
     position: absolute;
     top: 0;
   }
-
-
-
   &:before {
     width: 14px;
     height: 14px;
@@ -92,7 +87,6 @@
     -webkit-animation: loader2Before 1s infinite ease-in;
     animation: loader2Before 1s infinite ease-in;
   }
-
   &:after {
     width: 14px;
     height: 14px;
@@ -102,7 +96,6 @@
     -webkit-animation: loader2After 1s infinite ease-in;
     animation: loader2After 1s infinite ease-in;
   }
-
 }
 
 
@@ -324,17 +317,6 @@
 
 /*loader 5 end */
 
-.text_loader{
-  text-align: center;
-  color: #444444;
-  margin-top: 20px;
-  font-weight: 400;
-  line-height: 29px;
-  font-weight: 400;
-  line-height: 29px;
-
-}
-
 .loader_positioning{
   position: absolute;
   left: 0;
@@ -345,6 +327,16 @@
   width: 100%;
   max-width: 500px;
   padding: 0 10px;
+  .text_loader{
+    text-align: center;
+    color: #444444;
+    margin-top: 20px;
+    font-weight: 400;
+    line-height: 29px;
+    font-weight: 400;
+    line-height: 29px;
+  }
+
 }
 
 

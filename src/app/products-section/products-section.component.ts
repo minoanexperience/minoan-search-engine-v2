@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, ViewChild} from '@angular/core';
 import {Product} from "../type";
 import {NgbPaginationModule} from "@ng-bootstrap/ng-bootstrap";
 import {NgIf, SlicePipe} from "@angular/common";
@@ -18,7 +18,7 @@ export class ProductsSectionComponent implements OnDestroy{
 
   //pagination data
   page: number = 1;
-  limit: number = 25;
+  limit: number = 28;
   skip = 0;
   productListLength: number = 0;
 
