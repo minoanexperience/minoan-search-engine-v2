@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {Product} from "../type";
 import {NgbPaginationModule} from "@ng-bootstrap/ng-bootstrap";
 import {SlicePipe} from "@angular/common";
@@ -20,30 +20,24 @@ export class ProductsSectionComponent implements OnChanges{
   skip = 0;
   productListLength: number = this.productsList?.length;
 
+
   ngOnChanges(changes: SimpleChanges) {
     if (changes['productsList']) {
       this.productListLength = this.productsList?.length;
     }
   }
 
-  constructor() {
-    console.log(this.productsList);
-  }
+  constructor() {}
 
   protected readonly PLACEHOLDER_URL = 'assets/images/coming_soon.png';
 
   pageChangeHandler(event : any){
-    console.log('function called')
     this.skip = (this.page - 1) * this.limit;
-    const element = this.scrollContainer.nativeElement;
-    console.log('element', element);
     window?.scrollTo({top:0,behavior: 'smooth'});
-
-    // this.productsList = [...this.productsList]?.slice(this.skip);
 
   }
 
-  addItemStartClickEvent(product: any){
-
+  redirectToProduct(productUrl: string | undefined){
+    window.open(productUrl);
   }
 }

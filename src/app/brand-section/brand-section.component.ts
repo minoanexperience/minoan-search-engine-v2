@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {brandList} from "../constants";
 import {Brand, Product} from "../type";
 
@@ -13,12 +13,9 @@ export class BrandSectionComponent {
 
  @Input({required: true}) brandList: Brand[] = [];
 
-  constructor() {
-    console.log(brandList[0]);
-  }
+  constructor() {}
 
   openBrandDetailsModal(brand : any){
-    console.log(brand?.webLink)
     window.open(brand?.webLink)
   }
 }
