@@ -1,5 +1,5 @@
 <div class="container brand-section">
-  <h2 _ngcontent-ng-c1659513282="" class="heading-2">Browse our brands &amp; discounts</h2>
+  <h2 _ngcontent-ng-c1659513282="" class="heading-2">Our top recommended Brands &amp; Products based on your search.</h2>
   <div class="row">
     @for(brand of brandList; track brand?.id){
     <div class="col-4">
@@ -23,23 +23,23 @@
             </div>
           </figure>
 
-          <div class="product_content">
-            <div class="head_blk">
-              <a href="javascript:" (click)="openBrandDetailsModal(brand)" class="product_title">
-                <p class="offer_text">{{brand?.name}}</p>
-                @if (brand?.isSaleOn){
-                  <ng-container>
-                    @if(brand?.discountToProperty != 0){
-                      <p class="offer_text">Starting at {{brand?.discountToProperty}}% off</p>
+<!--          <div class="product_content">-->
+<!--            <div class="head_blk">-->
+<!--              <a href="javascript:" (click)="openBrandDetailsModal(brand)" class="product_title">-->
+<!--                <p class="offer_text">{{brand?.name}}</p>-->
+<!--                @if (brand?.isSaleOn){-->
+<!--                  <ng-container>-->
+<!--                    @if(brand?.discountToProperty != 0){-->
+<!--                      <p class="offer_text">Starting at {{brand?.discountToProperty}}% off</p>-->
 
-                    } @else if (brand?.discountToProperty == 0) {
-                      <p class="offer_text">Pricing As Shown</p>
-                    }
-                  </ng-container>
-                }
-              </a>
-            </div>
-          </div>
+<!--                    } @else if (brand?.discountToProperty == 0) {-->
+<!--                      <p class="offer_text">Pricing As Shown</p>-->
+<!--                    }-->
+<!--                  </ng-container>-->
+<!--                }-->
+<!--              </a>-->
+<!--            </div>-->
+<!--          </div>-->
         </div>
     </div>
     }
