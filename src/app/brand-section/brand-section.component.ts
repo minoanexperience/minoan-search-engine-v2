@@ -1,9 +1,11 @@
-import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
+import {Component, contentChild, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {brandList} from "../constants";
 import {Brand, Product} from "../type";
 import {I18nPluralPipe, NgClass, NgIf} from "@angular/common";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {SearchEngineService} from "../search-engine.service";
+
+import {SkeletonModule} from "primeng/skeleton";
 
 @Component({
   selector: 'app-brand-section',
@@ -13,7 +15,9 @@ import {SearchEngineService} from "../search-engine.service";
     ReactiveFormsModule,
     FormsModule,
     NgClass,
-    I18nPluralPipe
+    I18nPluralPipe,
+    SkeletonModule,
+    SkeletonModule
   ],
   templateUrl: './brand-section.component.html',
   styleUrl: './brand-section.component.scss'
@@ -23,7 +27,11 @@ export class BrandSectionComponent {
 
   searchKeyword : string = '';
   correctQuery: string = '';
-  loader: boolean = false;
+  brandsLoader: boolean = false;
+  invalidProducts: boolean = false;
+  // invalidBrands: boolean = false;
+  brandsFetched: boolean = true;
+  apiCallCount: number = 0;
 
   constructor(public searchService : SearchEngineService) {}
 
@@ -34,7 +42,7 @@ export class BrandSectionComponent {
    */
   onEnterKeyInSearch(event: any, element: HTMLInputElement): void {
     if (event.keyCode === 13) {
-      this.onSearchProducts();
+      this.fetchProductAndBrands();
       element.blur();
     }
   }
@@ -67,29 +75,129 @@ export class BrandSectionComponent {
    * search product based on query
    * @param query
    */
-  onSearchProducts() {
-    if (!this.loader) {
-      this.searchService.updateLoader(true);
-      this.searchService.updateLoaderText('Hang tight, we are fetching products for you....')
-      const requestBody = {query : this.searchKeyword};
-      this.loader = true;
-      this.searchService.getSearchedProducts(requestBody).subscribe({
-        next: (response: any) => {
-          this.searchService.resultProductList = response.results;
-          this.searchService.resultBrandList = response?.brands ? response.brandList : brandList;
-          this.correctQuery = response?.corrected_query;
-          this.loader = false;
-          this.searchService.updateLoader(false);
-          this.searchService.updateLoaderText('');
+   onSearchProducts(query?: string) {
+      // this.searchService.updateLoader(true);
+      // this.searchService.updateLoaderText('Hang tight, we are fetching products for you....')
+      const requestBody = {query : query ? query : this.searchKeyword};
+        this.searchService.getSearchedProducts(requestBody).subscribe({
+          next: (response: any) => {
+            this.searchService.resultProductList = response.results;
+            this.brandsFetched = true;
+            this.invalidProducts = this.invalidProducts ? this.invalidProducts : response.corrected_query !== '' && !response.results;
+            if(!query) {
+              this.correctQuery = this.invalidProducts && !response.results ? response.corrected_query : '';
+            }
+            this.searchService.updateLoader(!this.brandsFetched);
+            this.searchService.updateLoaderText('');
+          },
+          error: (err:any) => {
+            console.log(err);
+            this.searchService.updateLoader(!this.brandsFetched);
+            this.searchService.updateLoaderText('');
+          }
+        })
+  }
 
-        },
-        error: (err:any) => {
-          this.loader = false;
-          console.log(err);
-          this.searchService.updateLoader(false);
-          this.searchService.updateLoaderText('');
-        }
-      })
+  /**
+   * search brands based on query
+   */
+  // onSearchBrands(query?: string){
+  //     const requestBody = {query : query ? query : this.searchKeyword};
+  //
+  //         this.searchService.getSearchedBrands(requestBody).subscribe({
+  //           next: (response: any) => {
+  //             this.searchService.resultBrandList = response.results;
+  //             this.invalidBrands = this.invalidBrands ? this.invalidBrands :  response.corrected_query !== '' && !response.results;
+  //             if(!query){
+  //               this.correctQuery = this.invalidBrands && !response.results ? response.corrected_query : '';
+  //             }
+  //             // this.correctQuery = response.corrected_query;
+  //             this.brandsFetched = true;
+  //             this.searchService.updateLoader(!this.brandsFetched);
+  //             this.searchService.updateLoaderText('');
+  //             this.brandsLoader = false;
+  //           },
+  //           error: (err:any) => {
+  //             console.log(err);
+  //             this.searchService.updateLoader(!this.brandsFetched);
+  //             this.searchService.updateLoaderText('');
+  //             this.brandsLoader = false;
+  //           }
+  //         })
+  //
+  // }
+
+  fetchProductAndBrands(loader: boolean = true, query?: string){
+    this.apiCallCount += 1;
+    this.brandsLoader = true;
+    if(loader){
+      this.searchService.updateLoader(loader);
+      this.searchService.updateLoaderText('Hang tight, we are fetching products for you...');
+    }
+    // this.onSearchBrands(query);
+    this.onSearchProducts(query);
+
+    setTimeout(()=> {
+      this.searchPrompt();
+    }, 3000);
+  }
+
+  //  async fetchBrandAndProducts(query?: string, ){
+  //    this.apiCallCount += 1;
+  //   const productRequest = this.searchService.getSearchedProducts({query : query ? query : this.searchKeyword});
+  //   const brandRequest = this.searchService.getSearchedBrands({query : query ? query : this.searchKeyword});
+  //   Promise.all([brandRequest, productRequest]).then(results => {
+  //     const brandResponse = results[0];
+  //     const productResponse = results[1];
+  //     brandResponse.subscribe({
+  //       next: (response: any) => {
+  //         this.searchService.resultProductList = response.results;
+  //         this.brandsFetched = true;
+  //         this.invalidProducts = response.corrected_query !== '' && !response.results;
+  //         if(this.invalidBrands) {
+  //           this.correctQuery = this.invalidProducts && !response.results ? response.corrected_query : '';
+  //         }
+  //         this.searchService.updateLoader(!this.brandsFetched);
+  //         this.searchService.updateLoaderText('');
+  //       },
+  //       error: (err:any) => {
+  //         console.log(err);
+  //         this.searchService.updateLoader(!this.brandsFetched);
+  //         this.searchService.updateLoaderText('');
+  //       }
+  //     })
+  //     productResponse.subscribe({
+  //       next: (response: any) => {
+  //         this.searchService.resultBrandList = response.results;
+  //         this.invalidBrands = response.corrected_query !== '' && !response.results;
+  //         if(this.invalidProducts){
+  //           this.correctQuery = this.invalidBrands && !response.results ? response.corrected_query : '';
+  //         }
+  //         // this.correctQuery = response.corrected_query;
+  //         this.brandsFetched = true;
+  //         this.searchService.updateLoader(!this.brandsFetched);
+  //         this.searchService.updateLoaderText('');
+  //       },
+  //       error: (err:any) => {
+  //         console.log(err);
+  //         this.searchService.updateLoader(!this.brandsFetched);
+  //         this.searchService.updateLoaderText('');
+  //       }
+  //     })
+  //     setTimeout(() => {
+  //     },3000)
+  //   })
+  // }
+
+  searchPrompt(){
+    if(this.invalidProducts) {
+      if(this.apiCallCount < 2) {
+        this.apiCallCount += 1;
+        this.fetchProductAndBrands(false, this.correctQuery);
+      } else {
+        this.apiCallCount = 0;
+      }
     }
   }
+
 }

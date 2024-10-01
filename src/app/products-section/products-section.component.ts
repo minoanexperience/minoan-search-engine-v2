@@ -4,11 +4,12 @@ import {NgbPaginationModule} from "@ng-bootstrap/ng-bootstrap";
 import {NgIf, SlicePipe} from "@angular/common";
 import {SearchEngineService} from "../search-engine.service";
 import {Subscription} from "rxjs";
+import {SkeletonModule} from "primeng/skeleton";
 
 @Component({
   selector: 'app-products-section',
   standalone: true,
-  imports: [NgbPaginationModule, SlicePipe, NgIf],
+  imports: [NgbPaginationModule, SlicePipe, NgIf, SkeletonModule],
   templateUrl: './products-section.component.html',
   styleUrl: './products-section.component.scss'
 })

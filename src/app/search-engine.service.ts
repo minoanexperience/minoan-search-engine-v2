@@ -45,17 +45,30 @@ export class SearchEngineService {
   }
 
   /**
-   * [GET] API to search products
+   * [POST] API to search products
    * @param requestBody
    */
   getSearchedProducts(requestBody: any): Observable<any> {
-    return this.http.post(`${environment.apiUrl}/predict`, requestBody).pipe(
+    return this.http.post(`${environment.apiUrl}/predict_products`, requestBody).pipe(
       take(1),
       map((response : any) => response),
       catchError((err) => {
         throw err
       })
     );
+  }
+
+  /**
+   * [POST] API to search brands
+   */
+  getSearchedBrands(requestBody: any): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/predict_brands`, requestBody).pipe(
+      take(1),
+      map((response : any) => response),
+      catchError(err => {
+        throw err;
+      })
+    )
   }
 
 }

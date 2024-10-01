@@ -1,6 +1,6 @@
 <div class="container brand-section">
-  <h2 *ngIf="!searchService.resultBrandList.length" class="heading-2">Describe what you are looking for...</h2>
-  <h2 *ngIf="searchService.resultBrandList.length" class="heading-2">Our top recommended Brands &amp; Products based on your search.</h2>
+  <h2 *ngIf="!searchService.resultProductList?.length" class="heading-2">Describe what you are looking for...</h2>
+  <h2 *ngIf="searchService.resultProductList?.length" class="heading-2">Our top recommended Products based on your search.</h2>
   <div class="search-products form-group">
     <div class="fg-inner">
       <input class="form-control custom-input-1" type="text" [ngClass]="{'space': searchKeyword !== ''}" id="input" name="input" placeholder="Search products by prompt" autocomplete="off" #searchBox [(ngModel)]="searchKeyword" (keydown)="onEnterKeyInSearch($event, searchBox)" (ngModelChange)="onSearchInputChange($event)" />
@@ -9,34 +9,24 @@
           <path d="M11 1L1 11M1 1L11 11" stroke="#C7C7C7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </button>
-      <button class="search-icons-button" (click)="onSearchProducts()">
+      <button class="search-icons-button" (click)="fetchProductAndBrands()">
         <svg class="dsktp_search" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M17 17L12.9497 12.9497M12.9497 12.9497C14.2165 11.683 15 9.933 15 8C15 4.13401 11.866 1 8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15C9.933 15 11.683 14.2165 12.9497 12.9497Z" stroke="#444444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </button>
     </div>
   </div>
-  <div class="row">
-<!--    <div class="brands-heading">-->
-<!--      <p class="search_result_wrap">-->
-<!--        <ng-container>-->
-<!--          Showing {{searchService.RESULT_PRODUCT_COUNT}}-->
-<!--        </ng-container>-->
+  <h5 *ngIf="invalidProducts" class="heading-5">{{correctQuery}}</h5>
+<!--  <div class="row">-->
+<!--&lt;!&ndash;    <div class="brands-heading">&ndash;&gt;-->
+<!--&lt;!&ndash;      <p class="search_result_wrap">&ndash;&gt;-->
+<!--&lt;!&ndash;        <ng-container>&ndash;&gt;-->
+<!--&lt;!&ndash;          Showing {{searchService.RESULT_PRODUCT_COUNT}}&ndash;&gt;-->
+<!--&lt;!&ndash;        </ng-container>&ndash;&gt;-->
 
-<!--        <ng-container *ngIf="searchKeyword != ''">-->
-<!--          for-->
-<!--          <a href="javascript:void(0)" class="result_btn search_text" (click)="removeFilter()"> <span>‘{{searchKeyword}}’</span>-->
-<!--            <i class="icon">-->
-<!--              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">-->
-<!--                <path d="M11.25 6.75L6.75 11.25M6.75 6.75L11.25 11.25M16.5 9C16.5 13.1421 13.1421 16.5 9 16.5C4.85786 16.5 1.5 13.1421 1.5 9C1.5 4.85786 4.85786 1.5 9 1.5C13.1421 1.5 16.5 4.85786 16.5 9Z" stroke="#DC5A4B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>-->
-<!--              </svg>-->
-<!--            </i>-->
-<!--          </a>-->
-<!--        </ng-container>-->
-<!--&lt;!&ndash;        <ng-container *ngIf="queryParams?.categoryId">&ndash;&gt;-->
-<!--&lt;!&ndash;          <span class="spacer">in</span>&ndash;&gt;-->
-<!--&lt;!&ndash;          <a href="javascript:void(0)" class="result_btn"  (click)="removeFilter('category')">&ndash;&gt;-->
-<!--&lt;!&ndash;            <span>{{getCategoryName(queryParams?.categoryId)}}</span>&ndash;&gt;-->
+<!--&lt;!&ndash;        <ng-container *ngIf="searchKeyword != ''">&ndash;&gt;-->
+<!--&lt;!&ndash;          for&ndash;&gt;-->
+<!--&lt;!&ndash;          <a href="javascript:void(0)" class="result_btn search_text" (click)="removeFilter()"> <span>‘{{searchKeyword}}’</span>&ndash;&gt;-->
 <!--&lt;!&ndash;            <i class="icon">&ndash;&gt;-->
 <!--&lt;!&ndash;              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">&ndash;&gt;-->
 <!--&lt;!&ndash;                <path d="M11.25 6.75L6.75 11.25M6.75 6.75L11.25 11.25M16.5 9C16.5 13.1421 13.1421 16.5 9 16.5C4.85786 16.5 1.5 13.1421 1.5 9C1.5 4.85786 4.85786 1.5 9 1.5C13.1421 1.5 16.5 4.85786 16.5 9Z" stroke="#DC5A4B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>&ndash;&gt;-->
@@ -44,51 +34,65 @@
 <!--&lt;!&ndash;            </i>&ndash;&gt;-->
 <!--&lt;!&ndash;          </a>&ndash;&gt;-->
 <!--&lt;!&ndash;        </ng-container>&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        <ng-container *ngIf="queryParams?.categoryId">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          <span class="spacer">in</span>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          <a href="javascript:void(0)" class="result_btn"  (click)="removeFilter('category')">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <span>{{getCategoryName(queryParams?.categoryId)}}</span>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <i class="icon">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                <path d="M11.25 6.75L6.75 11.25M6.75 6.75L11.25 11.25M16.5 9C16.5 13.1421 13.1421 16.5 9 16.5C4.85786 16.5 1.5 13.1421 1.5 9C1.5 4.85786 4.85786 1.5 9 1.5C13.1421 1.5 16.5 4.85786 16.5 9Z" stroke="#DC5A4B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;              </svg>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            </i>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          </a>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        </ng-container>&ndash;&gt;&ndash;&gt;-->
 
-<!--      </p>-->
-<!--    </div>-->
-    @for(brand of searchService.resultBrandList; track brand?.id){
-    <div class="col-4">
-        <div class="product_card">
-          <figure>
-            <a (click)="openBrandDetailsModal(brand)">
-              <img class="product_banner" id="brand-img" src="{{brand?.landingImage}}" alt="brand_image" />
-              <div class="card_overlay">
-                <span class="brand_icon"><img src="{{brand.whiteLogo}}" width="150px" height="40px" alt="brand_logo"/> </span>
-              </div>
-            </a>
-
-            <div class="btn_blks">
-              <a href="{{brand?.webLink}}" (click)="openBrandDetailsModal(brand)" target="_blank" class="text_btn">Shop Now
-                <i class="icon">
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M13 5.44444L13 1M13 1H8.55556M13 1L7.07407 6.92593M4.85185 1.14815H4.55556C3.31099 1.14815 2.68871 1.14815 2.21335 1.39036C1.79522 1.60341 1.45526 1.94337 1.24221 2.3615C1 2.83686 1 3.45914 1 4.7037V9.44444C1 10.689 1 11.3113 1.24221 11.7866C1.45526 12.2048 1.79522 12.5447 2.21335 12.7578C2.68871 13 3.31099 13 4.55556 13H9.2963C10.5409 13 11.1631 13 11.6385 12.7578C12.0566 12.5447 12.3966 12.2048 12.6096 11.7866C12.8519 11.3113 12.8519 10.689 12.8519 9.44444V9.14815" stroke="#222222" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </i>
-              </a>
-            </div>
-          </figure>
-
-<!--          <div class="product_content">-->
-<!--            <div class="head_blk">-->
-<!--              <a href="javascript:" (click)="openBrandDetailsModal(brand)" class="product_title">-->
-<!--                <p class="offer_text">{{brand?.name}}</p>-->
-<!--                @if (brand?.isSaleOn){-->
-<!--                  <ng-container>-->
-<!--                    @if(brand?.discountToProperty != 0){-->
-<!--                      <p class="offer_text">Starting at {{brand?.discountToProperty}}% off</p>-->
-
-<!--                    } @else if (brand?.discountToProperty == 0) {-->
-<!--                      <p class="offer_text">Pricing As Shown</p>-->
-<!--                    }-->
-<!--                  </ng-container>-->
-<!--                }-->
+<!--&lt;!&ndash;      </p>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--    @for(brand of searchService.resultBrandList; track brand?.id){-->
+<!--    <div class="col-4">-->
+<!--        <div class="product_card">-->
+<!--          @defer  {-->
+<!--            <figure>-->
+<!--              <a (click)="openBrandDetailsModal(brand)">-->
+<!--                <img loading="lazy" class="product_banner" id="brand-img" src="{{brand?.landingImage}}" alt="brand_image" />-->
+<!--                <div class="card_overlay">-->
+<!--                  <span class="brand_icon"><img src="{{brand.whiteLogo}}" width="150px" height="40px" alt="brand_logo"/> </span>-->
+<!--                </div>-->
 <!--              </a>-->
-<!--            </div>-->
-<!--          </div>-->
-        </div>
-    </div>
-    }
-  </div>
+
+<!--              <div class="btn_blks">-->
+<!--                <a href="{{brand?.webLink}}" (click)="openBrandDetailsModal(brand)" target="_blank" class="text_btn">Shop Now-->
+<!--                  <i class="icon">-->
+<!--                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">-->
+<!--                      <path d="M13 5.44444L13 1M13 1H8.55556M13 1L7.07407 6.92593M4.85185 1.14815H4.55556C3.31099 1.14815 2.68871 1.14815 2.21335 1.39036C1.79522 1.60341 1.45526 1.94337 1.24221 2.3615C1 2.83686 1 3.45914 1 4.7037V9.44444C1 10.689 1 11.3113 1.24221 11.7866C1.45526 12.2048 1.79522 12.5447 2.21335 12.7578C2.68871 13 3.31099 13 4.55556 13H9.2963C10.5409 13 11.1631 13 11.6385 12.7578C12.0566 12.5447 12.3966 12.2048 12.6096 11.7866C12.8519 11.3113 12.8519 10.689 12.8519 9.44444V9.14815" stroke="#222222" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>-->
+<!--                    </svg>-->
+<!--                  </i>-->
+<!--                </a>-->
+<!--              </div>-->
+<!--            </figure>-->
+<!--          } @placeholder (minimum 2s){-->
+<!--            <p-skeleton height="280px" width="320px"></p-skeleton>-->
+<!--          }-->
+<!--&lt;!&ndash;          <div class="product_content">&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="head_blk">&ndash;&gt;-->
+<!--&lt;!&ndash;              <a href="javascript:" (click)="openBrandDetailsModal(brand)" class="product_title">&ndash;&gt;-->
+<!--&lt;!&ndash;                <p class="offer_text">{{brand?.name}}</p>&ndash;&gt;-->
+<!--&lt;!&ndash;                @if (brand?.isSaleOn){&ndash;&gt;-->
+<!--&lt;!&ndash;                  <ng-container>&ndash;&gt;-->
+<!--&lt;!&ndash;                    @if(brand?.discountToProperty != 0){&ndash;&gt;-->
+<!--&lt;!&ndash;                      <p class="offer_text">Starting at {{brand?.discountToProperty}}% off</p>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                    } @else if (brand?.discountToProperty == 0) {&ndash;&gt;-->
+<!--&lt;!&ndash;                      <p class="offer_text">Pricing As Shown</p>&ndash;&gt;-->
+<!--&lt;!&ndash;                    }&ndash;&gt;-->
+<!--&lt;!&ndash;                  </ng-container>&ndash;&gt;-->
+<!--&lt;!&ndash;                }&ndash;&gt;-->
+<!--&lt;!&ndash;              </a>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;          </div>&ndash;&gt;-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    }-->
+<!--  </div>-->
 </div>
 

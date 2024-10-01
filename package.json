@@ -19,7 +19,9 @@
     "@angular/platform-browser-dynamic": "^17.3.0",
     "@angular/router": "^17.3.0",
     "@ng-bootstrap/ng-bootstrap": "^17.0.1",
+    "@syncfusion/ej2-angular-notifications": "^27.1.50",
     "bootstrap": "^5.3.3",
+    "primeng": "^17.18.11",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"
