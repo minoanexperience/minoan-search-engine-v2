@@ -1,6 +1,6 @@
 <div class="container brand-section">
-  <h2 *ngIf="!searchService.resultBrandList.length" class="heading-2">Describe what you are looking for...</h2>
-  <h2 *ngIf="searchService.resultBrandList.length" class="heading-2">Our top recommended Products based on your search.</h2>
+  <h2 *ngIf="!searchService.resultProductList?.length" class="heading-2">Describe what you are looking for...</h2>
+  <h2 *ngIf="searchService.resultProductList?.length" class="heading-2">Our top recommended Products based on your search.</h2>
   <div class="search-products form-group">
     <div class="fg-inner">
       <input class="form-control custom-input-1" type="text" [ngClass]="{'space': searchKeyword !== ''}" id="input" name="input" placeholder="Search products by prompt" autocomplete="off" #searchBox [(ngModel)]="searchKeyword" (keydown)="onEnterKeyInSearch($event, searchBox)" (ngModelChange)="onSearchInputChange($event)" />
@@ -16,7 +16,7 @@
       </button>
     </div>
   </div>
-  <h5 *ngIf="invalidProducts && invalidBrands" class="heading-5">{{correctQuery}}</h5>
+  <h5 *ngIf="invalidProducts" class="heading-5">{{correctQuery}}</h5>
 <!--  <div class="row">-->
 <!--&lt;!&ndash;    <div class="brands-heading">&ndash;&gt;-->
 <!--&lt;!&ndash;      <p class="search_result_wrap">&ndash;&gt;-->

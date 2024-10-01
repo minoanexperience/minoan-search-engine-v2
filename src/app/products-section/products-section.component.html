@@ -11,13 +11,13 @@
 <!--  </div>-->
   <!--Content-->
   <div class="product_carousel_wrapper">
-    <div *ngIf="productListLength" class="container">
+    <div class="container">
       <div class="row">
         @for (product of productsList | slice: skip : page * limit; track product.ID){
           <div class="col-3">
+            @defer{
               <div class="card_ui_product">
-                @defer {
-                  <div class="product-card">
+                <div class="product-card">
                     <div class="product-card_inner">
                       <div class="product_img_wrapper">
                         <img class="product-img" [src]="product?.PRODUCT_IMAGE_URL ? product.PRODUCT_IMAGE_URL : PLACEHOLDER_URL" alt="{{product?.PRODUCT_NAME}}">
@@ -32,10 +32,13 @@
                       </a>
                     </div>
                   </div>
-                } @placeholder (minimum 2s){
-                  <p-skeleton width="280px" height="280"></p-skeleton>
-                }
+
               </div>
+            } @placeholder (minimum 2s){
+              <div [style.margin-bottom.px]='20'>
+                <p-skeleton   class="mb-2" height="280px" width="250px"></p-skeleton>
+              </div>
+            }
           </div>
         }
       </div>

@@ -29,7 +29,7 @@ export class BrandSectionComponent {
   correctQuery: string = '';
   brandsLoader: boolean = false;
   invalidProducts: boolean = false;
-  invalidBrands: boolean = false;
+  // invalidBrands: boolean = false;
   brandsFetched: boolean = true;
   apiCallCount: number = 0;
 
@@ -96,38 +96,36 @@ export class BrandSectionComponent {
             this.searchService.updateLoaderText('');
           }
         })
-
-
   }
 
   /**
    * search brands based on query
    */
-  onSearchBrands(query?: string){
-      const requestBody = {query : query ? query : this.searchKeyword};
-
-          this.searchService.getSearchedBrands(requestBody).subscribe({
-            next: (response: any) => {
-              this.searchService.resultBrandList = response.results;
-              this.invalidBrands = this.invalidBrands ? this.invalidBrands :  response.corrected_query !== '' && !response.results;
-              if(!query){
-                this.correctQuery = this.invalidBrands && !response.results ? response.corrected_query : '';
-              }
-              // this.correctQuery = response.corrected_query;
-              this.brandsFetched = true;
-              this.searchService.updateLoader(!this.brandsFetched);
-              this.searchService.updateLoaderText('');
-              this.brandsLoader = false;
-            },
-            error: (err:any) => {
-              console.log(err);
-              this.searchService.updateLoader(!this.brandsFetched);
-              this.searchService.updateLoaderText('');
-              this.brandsLoader = false;
-            }
-          })
-
-  }
+  // onSearchBrands(query?: string){
+  //     const requestBody = {query : query ? query : this.searchKeyword};
+  //
+  //         this.searchService.getSearchedBrands(requestBody).subscribe({
+  //           next: (response: any) => {
+  //             this.searchService.resultBrandList = response.results;
+  //             this.invalidBrands = this.invalidBrands ? this.invalidBrands :  response.corrected_query !== '' && !response.results;
+  //             if(!query){
+  //               this.correctQuery = this.invalidBrands && !response.results ? response.corrected_query : '';
+  //             }
+  //             // this.correctQuery = response.corrected_query;
+  //             this.brandsFetched = true;
+  //             this.searchService.updateLoader(!this.brandsFetched);
+  //             this.searchService.updateLoaderText('');
+  //             this.brandsLoader = false;
+  //           },
+  //           error: (err:any) => {
+  //             console.log(err);
+  //             this.searchService.updateLoader(!this.brandsFetched);
+  //             this.searchService.updateLoaderText('');
+  //             this.brandsLoader = false;
+  //           }
+  //         })
+  //
+  // }
 
   fetchProductAndBrands(loader: boolean = true, query?: string){
     this.apiCallCount += 1;
@@ -136,7 +134,7 @@ export class BrandSectionComponent {
       this.searchService.updateLoader(loader);
       this.searchService.updateLoaderText('Hang tight, we are fetching products for you...');
     }
-    this.onSearchBrands(query);
+    // this.onSearchBrands(query);
     this.onSearchProducts(query);
 
     setTimeout(()=> {
@@ -192,11 +190,9 @@ export class BrandSectionComponent {
   // }
 
   searchPrompt(){
-    console.log('prompt called')
-    if(this.invalidBrands && this.invalidProducts) {
+    if(this.invalidProducts) {
       if(this.apiCallCount < 2) {
         this.apiCallCount += 1;
-        console.log('function called');
         this.fetchProductAndBrands(false, this.correctQuery);
       } else {
         this.apiCallCount = 0;
