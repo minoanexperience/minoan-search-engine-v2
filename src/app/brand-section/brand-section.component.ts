@@ -1,10 +1,7 @@
-import {Component, contentChild, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
-import {brandList} from "../constants";
-import {Brand, Product} from "../type";
+import {Component} from '@angular/core';
 import {I18nPluralPipe, NgClass, NgIf} from "@angular/common";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {SearchEngineService} from "../search-engine.service";
-
 import {SkeletonModule} from "primeng/skeleton";
 
 @Component({
@@ -27,7 +24,7 @@ export class BrandSectionComponent {
 
   searchKeyword : string = '';
   correctQuery: string = '';
-  brandsLoader: boolean = false;
+  // brandsLoader: boolean = false;
   invalidProducts: boolean = false;
   // invalidBrands: boolean = false;
   brandsFetched: boolean = true;
@@ -83,17 +80,20 @@ export class BrandSectionComponent {
           next: (response: any) => {
             this.searchService.resultProductList = response.results;
             this.brandsFetched = true;
-            this.invalidProducts = this.invalidProducts ? this.invalidProducts : response.corrected_query !== '' && !response.results;
+            this.invalidProducts = !query ? response.corrected_query !== '' && !response.results : true;
             if(!query) {
               this.correctQuery = this.invalidProducts && !response.results ? response.corrected_query : '';
             }
             this.searchService.updateLoader(!this.brandsFetched);
             this.searchService.updateLoaderText('');
+            this.searchService.promptLoader = false;
+            this.searchService.pageNumber = 1;
           },
           error: (err:any) => {
             console.log(err);
             this.searchService.updateLoader(!this.brandsFetched);
             this.searchService.updateLoaderText('');
+            this.searchService.promptLoader = false;
           }
         })
   }
@@ -129,7 +129,7 @@ export class BrandSectionComponent {
 
   fetchProductAndBrands(loader: boolean = true, query?: string){
     this.apiCallCount += 1;
-    this.brandsLoader = true;
+    // this.brandsLoader = true;
     if(loader){
       this.searchService.updateLoader(loader);
       this.searchService.updateLoaderText('Hang tight, we are fetching products for you...');
@@ -138,7 +138,9 @@ export class BrandSectionComponent {
     this.onSearchProducts(query);
 
     setTimeout(()=> {
-      this.searchPrompt();
+      if(this.invalidProducts) {
+        this.searchPrompt();
+      }
     }, 3000);
   }
 
@@ -190,14 +192,13 @@ export class BrandSectionComponent {
   // }
 
   searchPrompt(){
-    if(this.invalidProducts) {
       if(this.apiCallCount < 2) {
         this.apiCallCount += 1;
+        this.searchService.promptLoader = true;
         this.fetchProductAndBrands(false, this.correctQuery);
       } else {
         this.apiCallCount = 0;
       }
-    }
   }
 
 }

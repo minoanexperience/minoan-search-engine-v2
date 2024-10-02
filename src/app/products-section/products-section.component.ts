@@ -16,9 +16,10 @@ import {SkeletonModule} from "primeng/skeleton";
 export class ProductsSectionComponent implements OnDestroy{
   @ViewChild('scrollContainer') scrollContainer!: ElementRef;
   productsList: Product[] = [];
+  paginatedProductList: Product[] = [];
 
   //pagination data
-  page: number = 1;
+  // page: number = 1;
   limit: number = 28;
   skip = 0;
   productListLength: number = 0;
@@ -30,6 +31,9 @@ export class ProductsSectionComponent implements OnDestroy{
       next: (value: any) => {
         this.productsList = value;
         this.productListLength = this.productsList?.length;
+        this.skip = (this.searchService.pageNumber - 1) * this.limit;
+        // this.getPaginatedProductList();
+        // this.page = 1;
       }
     })
   }
@@ -37,7 +41,7 @@ export class ProductsSectionComponent implements OnDestroy{
   protected readonly PLACEHOLDER_URL = 'assets/coming_soon.png';
 
   pageChangeHandler(event : any){
-    this.skip = (this.page - 1) * this.limit;
+    this.skip = (this.searchService.pageNumber - 1) * this.limit;
     window?.scrollTo({top:0,behavior: 'smooth'});
 
   }
@@ -48,4 +52,9 @@ export class ProductsSectionComponent implements OnDestroy{
   ngOnDestroy() {
     this.productListSubscription?.unsubscribe();
   }
+
+  //  getPaginatedProductList(){
+  //   this.skip = (this.searchService.pageNumber - 1) * this.limit;
+  //   this.paginatedProductList = [...this.productsList].slice(this.skip, this.limit * this.searchService.pageNumber);
+  // }
 }

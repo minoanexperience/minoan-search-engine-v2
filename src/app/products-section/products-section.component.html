@@ -12,8 +12,14 @@
   <!--Content-->
   <div class="product_carousel_wrapper">
     <div class="container">
+      <div class="loader_wrapper" *ngIf="searchService.promptLoader">
+        <div class="loader_positioning">
+          <div class="text_loader">Recommending some products for you.....</div>
+          <div class="loader2"></div>
+        </div>
+      </div>
       <div class="row">
-        @for (product of productsList | slice: skip : page * limit; track product.ID){
+        @for (product of productsList | slice: skip : searchService.pageNumber * limit; track product.ID){
           <div class="col-3">
             @defer{
               <div class="card_ui_product">
@@ -51,7 +57,7 @@
     <ngb-pagination
       class="d-flex justify-content-center"
       [collectionSize]="productListLength"
-      [(page)]="page"
+      [(page)]="searchService.pageNumber"
       [pageSize]="limit"
       [maxSize]="6"
       [rotate]="true"
