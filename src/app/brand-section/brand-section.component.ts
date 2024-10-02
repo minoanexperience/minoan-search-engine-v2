@@ -78,7 +78,6 @@ export class BrandSectionComponent {
       const requestBody = {query : query ? query : this.searchKeyword};
         this.searchService.getSearchedProducts(requestBody).subscribe({
           next: (response: any) => {
-            this.searchService.pageNumber = 1;
             this.searchService.resultProductList = response.results;
             this.brandsFetched = true;
             this.invalidProducts = !query ? response.corrected_query !== '' && !response.results : true;
@@ -88,6 +87,7 @@ export class BrandSectionComponent {
             this.searchService.updateLoader(!this.brandsFetched);
             this.searchService.updateLoaderText('');
             this.searchService.promptLoader = false;
+            this.searchService.pageNumber = 1;
           },
           error: (err:any) => {
             console.log(err);
@@ -138,9 +138,7 @@ export class BrandSectionComponent {
     this.onSearchProducts(query);
 
     setTimeout(()=> {
-      console.log(this.invalidProducts)
       if(this.invalidProducts) {
-        console.log('calling prompt query', query);
         this.searchPrompt();
       }
     }, 3000);

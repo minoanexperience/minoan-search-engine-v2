@@ -16,6 +16,7 @@ import {SkeletonModule} from "primeng/skeleton";
 export class ProductsSectionComponent implements OnDestroy{
   @ViewChild('scrollContainer') scrollContainer!: ElementRef;
   productsList: Product[] = [];
+  paginatedProductList: Product[] = [];
 
   //pagination data
   // page: number = 1;
@@ -30,6 +31,8 @@ export class ProductsSectionComponent implements OnDestroy{
       next: (value: any) => {
         this.productsList = value;
         this.productListLength = this.productsList?.length;
+        this.skip = (this.searchService.pageNumber - 1) * this.limit;
+        // this.getPaginatedProductList();
         // this.page = 1;
       }
     })
@@ -49,4 +52,9 @@ export class ProductsSectionComponent implements OnDestroy{
   ngOnDestroy() {
     this.productListSubscription?.unsubscribe();
   }
+
+  //  getPaginatedProductList(){
+  //   this.skip = (this.searchService.pageNumber - 1) * this.limit;
+  //   this.paginatedProductList = [...this.productsList].slice(this.skip, this.limit * this.searchService.pageNumber);
+  // }
 }
