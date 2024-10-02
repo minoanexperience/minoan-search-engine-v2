@@ -19,7 +19,7 @@
         </div>
       </div>
       <div class="row">
-        @for (product of productsList | slice: skip : searchService.pageNumber * limit; track product.ID){
+        @for (product of productsList | slice: skip : page * limit; track product.ID){
           <div class="col-3">
             @defer{
               <div class="card_ui_product">
@@ -57,7 +57,7 @@
     <ngb-pagination
       class="d-flex justify-content-center"
       [collectionSize]="productListLength"
-      [(page)]="searchService.pageNumber"
+      [(page)]="page"
       [pageSize]="limit"
       [maxSize]="6"
       [rotate]="true"

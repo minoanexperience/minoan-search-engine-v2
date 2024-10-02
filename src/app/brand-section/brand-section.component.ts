@@ -67,35 +67,69 @@ export class BrandSectionComponent {
     window.open(brand?.webLink)
   }
 
+  /**
+   * fetch brands and product for search query
+   * @param searchCall
+   */
+  async fetchProductAndBrands(searchCall: boolean = true){
+    // this.brandsLoader = true;
+    if(searchCall){
+      this.searchService.updateLoader(searchCall);
+      this.searchService.updateLoaderText('Hang tight, we are fetching products for you...');
+    }
+    // this.onSearchBrands(query);
+    console.log('call no :', this.apiCallCount , 'with searchCall : ', searchCall);
+    await this.onSearchProducts(searchCall)
+
+    if(this.invalidProducts){
+      this.searchPrompt();
+    }
+    // setTimeout(()=> {
+    //   console.log('inside timeout')
+    //   if(this.invalidProducts) {
+    //     console.log('prompt called');
+    //     this.searchPrompt();
+    //   }
+    // }, 3000);
+  }
 
   /**
-   * search product based on query
-   * @param query
+   * search products based on query
+   * @param searchCall
    */
-   onSearchProducts(query?: string) {
-      // this.searchService.updateLoader(true);
-      // this.searchService.updateLoaderText('Hang tight, we are fetching products for you....')
-      const requestBody = {query : query ? query : this.searchKeyword};
-        this.searchService.getSearchedProducts(requestBody).subscribe({
-          next: (response: any) => {
-            this.searchService.resultProductList = response.results;
-            this.brandsFetched = true;
-            this.invalidProducts = !query ? response.corrected_query !== '' && !response.results : true;
-            if(!query) {
-              this.correctQuery = this.invalidProducts && !response.results ? response.corrected_query : '';
-            }
-            this.searchService.updateLoader(!this.brandsFetched);
-            this.searchService.updateLoaderText('');
-            this.searchService.promptLoader = false;
-            this.searchService.pageNumber = 1;
-          },
-          error: (err:any) => {
-            console.log(err);
-            this.searchService.updateLoader(!this.brandsFetched);
-            this.searchService.updateLoaderText('');
-            this.searchService.promptLoader = false;
-          }
-        })
+  async onSearchProducts(searchCall: boolean) {
+    // this.searchService.updateLoader(true);
+    // this.searchService.updateLoaderText('Hang tight, we are fetching products for you....')
+    console.log('searchCall: ', searchCall);
+    console.log('Before call : ');
+    console.log('invalid products : ', this.invalidProducts);
+    console.log('corrected query : ', this.correctQuery);
+
+    const requestBody = {query: searchCall ? this.searchKeyword : this.correctQuery};
+    await new  Promise(resolve => {
+      this.searchService.getSearchedProducts(requestBody).subscribe({
+        next: (response: any) => {
+          this.searchService.resultProductList = response.results;
+          this.brandsFetched = true;
+          this.invalidProducts = searchCall ? !response.results && response.corrected_query !== '' : this.invalidProducts;
+          this.correctQuery = searchCall ? response.corrected_query : this.correctQuery;
+          console.log('After call : ');
+          console.log('invalid products : ', this.invalidProducts);
+          console.log('corrected query : ', this.correctQuery);
+          this.searchService.updateLoader(!this.brandsFetched);
+          this.searchService.updateLoaderText('');
+          this.searchService.promptLoader = false;
+          return resolve(true);
+        },
+        error: (err: any) => {
+          console.log(err);
+          this.searchService.updateLoader(!this.brandsFetched);
+          this.searchService.updateLoaderText('');
+          this.searchService.promptLoader = false;
+          return resolve(true);
+        }
+      })
+    })
   }
 
   /**
@@ -127,22 +161,6 @@ export class BrandSectionComponent {
   //
   // }
 
-  fetchProductAndBrands(loader: boolean = true, query?: string){
-    this.apiCallCount += 1;
-    // this.brandsLoader = true;
-    if(loader){
-      this.searchService.updateLoader(loader);
-      this.searchService.updateLoaderText('Hang tight, we are fetching products for you...');
-    }
-    // this.onSearchBrands(query);
-    this.onSearchProducts(query);
-
-    setTimeout(()=> {
-      if(this.invalidProducts) {
-        this.searchPrompt();
-      }
-    }, 3000);
-  }
 
   //  async fetchBrandAndProducts(query?: string, ){
   //    this.apiCallCount += 1;
@@ -191,11 +209,14 @@ export class BrandSectionComponent {
   //   })
   // }
 
+  /**
+   * search for prompt if onSearchProduct doesn't give results
+   */
   searchPrompt(){
-      if(this.apiCallCount < 2) {
-        this.apiCallCount += 1;
+    this.apiCallCount += 1;
+    if(this.apiCallCount < 2) {
         this.searchService.promptLoader = true;
-        this.fetchProductAndBrands(false, this.correctQuery);
+        this.fetchProductAndBrands(false);
       } else {
         this.apiCallCount = 0;
       }
