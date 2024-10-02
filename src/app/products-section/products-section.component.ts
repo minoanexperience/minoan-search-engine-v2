@@ -18,7 +18,7 @@ export class ProductsSectionComponent implements OnDestroy{
   productsList: Product[] = [];
 
   //pagination data
-  page: number = 1;
+  // page: number = 1;
   limit: number = 28;
   skip = 0;
   productListLength: number = 0;
@@ -30,6 +30,7 @@ export class ProductsSectionComponent implements OnDestroy{
       next: (value: any) => {
         this.productsList = value;
         this.productListLength = this.productsList?.length;
+        // this.page = 1;
       }
     })
   }
@@ -37,7 +38,7 @@ export class ProductsSectionComponent implements OnDestroy{
   protected readonly PLACEHOLDER_URL = 'assets/coming_soon.png';
 
   pageChangeHandler(event : any){
-    this.skip = (this.page - 1) * this.limit;
+    this.skip = (this.searchService.pageNumber - 1) * this.limit;
     window?.scrollTo({top:0,behavior: 'smooth'});
 
   }
