@@ -6,9 +6,6 @@ import {SearchEngineService} from "../search-engine.service";
 import {Subscription} from "rxjs";
 import {SkeletonModule} from "primeng/skeleton";
 import {DialogModule} from "primeng/dialog";
-import {productList} from "../constants";
-// import {NoopAnimationsModule} from "@angular/platform-browser/animations";
-// import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @Component({
   selector: 'app-products-section',
@@ -69,7 +66,9 @@ export class ProductsSectionComponent implements OnDestroy{
     this.variants = this.selectedProduct.PRODUCT_NAME?.split(',').slice(1);
   }
 
-
+  getId(productID : string | null){
+    return productID ? productID : Math.floor(Math.random() * 1000) + 1;
+  }
 
   redirectToProduct(productUrl: string | undefined){
     window.open(productUrl);

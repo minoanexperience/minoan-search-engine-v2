@@ -8,7 +8,7 @@
         </div>
       </div>
       <div  class="row">
-        @for (product of productsList | slice: skip : page * limit; track product.ID){
+        @for (product of productsList | slice: skip : page * limit; track getId(product.ID)){
           <div class="col-3">
             @defer{
               <div class="card_ui_product" (click)="onProductDetailsModalShow(product)">
