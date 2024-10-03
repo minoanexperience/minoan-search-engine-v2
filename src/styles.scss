@@ -44,4 +44,121 @@ body {
   gap:2rem
 }
 
+.product_modal_wrapper{
+  width: 100%;
+  max-width: 572px;
+ .p-dialog-content {
+    max-height: 704px;
+    overflow-y: auto;
+    padding: 0;
+    border-top-right-radius: 12px;
+    border-top-left-radius: 12px;
+    position: relative;
+    box-shadow: 16px 24px 40px #10182840;
+   padding-bottom: 40px;
+  }
+  .modal-body {
+    padding: 40px 45px 0;
+  }
+  .product_img_warapper .product_inner_img a img {
+    width: 150px;
+  }
+  .product_modal_content{
 
+    a{
+      text-decoration:none;
+    }
+    .brand_name{
+      font-size:16px;
+      font-weight: 400;
+      line-height: 19.09px;
+      text-align: left;
+      color: #666666;
+      margin-bottom: 4px;
+    }
+    .product_name{
+      font-size:20px;
+      font-weight: 700;
+      line-height: 24.42px;
+      text-align: left;
+      color: #444444;
+      margin-bottom: 9px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      &:hover{
+        color: #006878;
+      }
+    }
+    .save_and_off{
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 17.89px;
+      text-align: left;
+      color: #006878;
+      margin-bottom: 4px;
+    }
+    .price{
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 21.47px;
+      text-align: left;
+      color: #006878;
+    }
+  }
+  .link-primary-btn {
+    display: inline-flex;
+    align-items: center;
+    transition: .2s all ease;
+    background: transparent;
+    border: none;
+    color: #dc5a4b!important;
+    justify-content: center;
+    margin-top: 40px;
+    p{
+      margin:0;
+    }
+    .el-icon {
+      display: inline-flex;
+      vertical-align: middle;
+      margin-right: 7px;
+      transition: .2s all ease;
+    }
+    .el-text {
+      font-family: Helvetica Neue md;
+      font-size: .9375rem;
+      font-weight: 500;
+      line-height: 18.31px;
+      letter-spacing: .05em;
+      text-align: left;
+      text-transform: uppercase;
+    }
+  }
+  a{
+    text-decoration:none;
+  }
+  .modal-category-list{
+    margin-bottom: 16px;
+    ul{
+      padding: 0;
+      margin: 0;
+      display:flex;
+      flex-wrap: wrap;
+      li{
+        display: inline-flex;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        color: #444444;
+        margin-bottom: 10px;
+        margin-right: 10px;
+        background: #F5F5F5;
+        padding: 4px 10px;
+        border-radius: 8px;
+      }
+    }
+  }
+
+}
