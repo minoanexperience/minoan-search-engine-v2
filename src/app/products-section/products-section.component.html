@@ -1,15 +1,4 @@
 <section #scrollContainer class="product_carousel_inner">
-<!--  &lt;!&ndash; Header &ndash;&gt;-->
-<!--  <div class="heading_wrapper">-->
-<!--    @if(productListLength){-->
-<!--      <h1 class="heading9">Shop our Work from Anywhere collection</h1>-->
-<!--    } @else {-->
-<!--      <h1 class="heading9">Search for products..</h1>-->
-<!--    }-->
-<!--    <div class="view_more_btn">-->
-<!--    </div>-->
-<!--  </div>-->
-  <!--Content-->
   <div class="product_carousel_wrapper">
     <div class="container">
       <div class="loader_wrapper" *ngIf="searchService.promptLoader">
@@ -18,24 +7,26 @@
           <div class="loader2"></div>
         </div>
       </div>
-      <div class="row">
+      <div  class="row">
         @for (product of productsList | slice: skip : page * limit; track product.ID){
           <div class="col-3">
             @defer{
-              <div class="card_ui_product">
+              <div class="card_ui_product" (click)="onProductDetailsModalShow(product)">
                 <div class="product-card">
                     <div class="product-card_inner">
                       <div class="product_img_wrapper">
-                        <img class="product-img" [src]="product?.PRODUCT_IMAGE_URL ? product.PRODUCT_IMAGE_URL : PLACEHOLDER_URL" alt="{{product?.PRODUCT_NAME}}">
+                        <img loading="lazy" class="product-img" [src]="product?.PRODUCT_IMAGE_URL ? product.PRODUCT_IMAGE_URL : PLACEHOLDER_URL" alt="{{product?.PRODUCT_NAME}}">
                       </div>
-                      <div class="product_content_section">
-                        <p class="brand-name">{{product?.BRAND_NAME}}</p>
-                        <p class="product-name">{{product?.PRODUCT_NAME?.split(',')?.[0]}}</p>
+                      <div class="content_wrapper">
+                        <div class="product_content_section">
+                          <p class="brand-name">{{product?.BRAND_NAME}}</p>
+                          <p class="product-name">{{product?.PRODUCT_NAME?.split(',')?.[0]}}</p>
+                        </div>
+                        <a type="button" class="add_icon" (click)="redirectToProduct(product?.PRODUCT_URL)">
+                          Explore Product
+                          <svg width="12" height="12" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15.75 6.75001L15.75 2.25001M15.75 2.25001H11.25M15.75 2.25001L9 9M7.5 2.25H5.85C4.58988 2.25 3.95982 2.25 3.47852 2.49524C3.05516 2.71095 2.71095 3.05516 2.49524 3.47852C2.25 3.95982 2.25 4.58988 2.25 5.85V12.15C2.25 13.4101 2.25 14.0402 2.49524 14.5215C2.71095 14.9448 3.05516 15.289 3.47852 15.5048C3.95982 15.75 4.58988 15.75 5.85 15.75H12.15C13.4101 15.75 14.0402 15.75 14.5215 15.5048C14.9448 15.289 15.289 14.9448 15.5048 14.5215C15.75 14.0402 15.75 13.4101 15.75 12.15V10.5" stroke="#DC5A4B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inner-svg"></path></svg>
+                        </a>
                       </div>
-                      <a type="button" class="add_icon" (click)="redirectToProduct(product?.PRODUCT_URL)">
-                        Explore Product
-                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15.75 6.75001L15.75 2.25001M15.75 2.25001H11.25M15.75 2.25001L9 9M7.5 2.25H5.85C4.58988 2.25 3.95982 2.25 3.47852 2.49524C3.05516 2.71095 2.71095 3.05516 2.49524 3.47852C2.25 3.95982 2.25 4.58988 2.25 5.85V12.15C2.25 13.4101 2.25 14.0402 2.49524 14.5215C2.71095 14.9448 3.05516 15.289 3.47852 15.5048C3.95982 15.75 4.58988 15.75 5.85 15.75H12.15C13.4101 15.75 14.0402 15.75 14.5215 15.5048C14.9448 15.289 15.289 14.9448 15.5048 14.5215C15.75 14.0402 15.75 13.4101 15.75 12.15V10.5" stroke="#DC5A4B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inner-svg"></path></svg>
-                      </a>
                     </div>
                   </div>
 
@@ -81,3 +72,62 @@
   </div>
   }
 </section>
+
+
+<!--Product modal starts here-->
+<p-dialog (click)="onProductDetailsModalHide()" [showHeader]="false" [(visible)]="productDetailsModal" [modal]="true" [baseZIndex]="10000"
+          [draggable]="false" [resizable]="false" styleClass="product_modal_wrapper" (onHide)="onProductDetailsModalHide()"
+          >
+<!--  <div class="loader_wrapper" *ngIf="searchService.modalLoader">-->
+<!--    <div class="loader_positioning">-->
+<!--      <div class="loader2"></div>-->
+<!--    </div>-->
+<!--  </div>-->
+  <div class="modal-content">
+    <div class="modal-body">
+        <!--   Carusel Item Form Model content     -->
+          <div class="row add_product_row edit_item_product_carousal">
+            <div class="col-md-4 product_img_warapper">
+              <div class="product_inner_img">
+                <a [href]="selectedProduct?.PRODUCT_URL" target="_blank">
+                  <img [src]="selectedProduct?.PRODUCT_IMAGE_URL" [alt]="selectedProduct?.PRODUCT_NAME">
+                </a>
+              </div>
+            </div>
+            <div class="col-md-8">
+              <div class="product_modal_content">
+                <p class="brand_name" >{{selectedProduct?.BRAND_NAME}}</p>
+                  <p class="product_name">{{selectedProduct?.PRODUCT_NAME?.split(',')?.[0]}}</p>
+              </div>
+              <div class="modal-category-list">
+                <ul *ngIf="variants.length">
+                  <li *ngFor="let category of variants">{{ category }}</li>
+                </ul>
+              </div>
+            </div>
+<!--            <div class="modal-category-list">-->
+<!--              <ul *ngIf="variants.length">-->
+<!--                <li *ngFor="let category of variants">{{ category }}</li>-->
+<!--              </ul>-->
+<!--            </div>-->
+          </div>
+
+    </div>
+    <div class="modal-footer align-self-center p_sticky_mob">
+      <div >
+        <div class="edit-item_button_wrap">
+          <a  [href]="selectedProduct?.PRODUCT_URL" target="_blank" class="link-primary-btn view_product_btn">
+              <span class="el-icon">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                   <path class="inner-svg" d="M15.75 6.75001L15.75 2.25001M15.75 2.25001H11.25M15.75 2.25001L9 9M7.5 2.25H5.85C4.58988 2.25 3.95982 2.25 3.47852 2.49524C3.05516 2.71095 2.71095 3.05516 2.49524 3.47852C2.25 3.95982 2.25 4.58988 2.25 5.85V12.15C2.25 13.4101 2.25 14.0402 2.49524 14.5215C2.71095 14.9448 3.05516 15.289 3.47852 15.5048C3.95982 15.75 4.58988 15.75 5.85 15.75H12.15C13.4101 15.75 14.0402 15.75 14.5215 15.5048C14.9448 15.289 15.289 14.9448 15.5048 14.5215C15.75 14.0402 15.75 13.4101 15.75 12.15V10.5" stroke="#DC5A4B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            <p class="el-text">VIEW PRODUCT DETAILS & BUYING OPTIONS</p>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</p-dialog>
+<!-- Edit Item modal start here  -->
+

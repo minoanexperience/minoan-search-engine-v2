@@ -1,15 +1,19 @@
 import {Component, ElementRef, OnDestroy, ViewChild} from '@angular/core';
 import {Product} from "../type";
 import {NgbPaginationModule} from "@ng-bootstrap/ng-bootstrap";
-import {NgIf, SlicePipe} from "@angular/common";
+import {NgClass, NgFor, NgIf, SlicePipe} from "@angular/common";
 import {SearchEngineService} from "../search-engine.service";
 import {Subscription} from "rxjs";
 import {SkeletonModule} from "primeng/skeleton";
+import {DialogModule} from "primeng/dialog";
+import {productList} from "../constants";
+// import {NoopAnimationsModule} from "@angular/platform-browser/animations";
+// import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @Component({
   selector: 'app-products-section',
   standalone: true,
-  imports: [NgbPaginationModule, SlicePipe, NgIf, SkeletonModule],
+  imports: [NgbPaginationModule, SlicePipe, NgIf, SkeletonModule, DialogModule, NgClass, NgFor],
   templateUrl: './products-section.component.html',
   styleUrl: './products-section.component.scss'
 })
@@ -17,6 +21,9 @@ export class ProductsSectionComponent implements OnDestroy{
   @ViewChild('scrollContainer') scrollContainer!: ElementRef;
   productsList: Product[] = [];
   paginatedProductList: Product[] = [];
+  productDetailsModal: boolean = false;
+  selectedProduct!: Product;
+  variants:string[]=[];
 
   //pagination data
   page: number = 1;
@@ -46,6 +53,23 @@ export class ProductsSectionComponent implements OnDestroy{
     window?.scrollTo({top:0,behavior: 'smooth'});
 
   }
+
+  onProductDetailsModalHide(){
+    this.productDetailsModal = false;
+  }
+
+  onProductDetailsModalShow(productInfo : Product){
+    this.productDetailsModal = true;
+    this.selectedProduct = productInfo;
+    this.getVariants();
+    console.log(this.selectedProduct);
+  }
+
+  getVariants(){
+    this.variants = this.selectedProduct.PRODUCT_NAME?.split(',').slice(1);
+  }
+
+
 
   redirectToProduct(productUrl: string | undefined){
     window.open(productUrl);

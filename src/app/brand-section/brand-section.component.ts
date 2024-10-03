@@ -29,6 +29,7 @@ export class BrandSectionComponent {
   // invalidBrands: boolean = false;
   brandsFetched: boolean = true;
   apiCallCount: number = 0;
+  isSpellingMistake: boolean = false;
 
   constructor(public searchService : SearchEngineService) {}
 
@@ -113,6 +114,9 @@ export class BrandSectionComponent {
           this.brandsFetched = true;
           this.invalidProducts = searchCall ? !response.results && response.corrected_query !== '' : this.invalidProducts;
           this.correctQuery = searchCall ? response.corrected_query : this.correctQuery;
+          if(!this.invalidProducts && this.correctQuery !== ''){
+            this.isSpellingMistake = true;
+          }
           console.log('After call : ');
           console.log('invalid products : ', this.invalidProducts);
           console.log('corrected query : ', this.correctQuery);
@@ -130,6 +134,13 @@ export class BrandSectionComponent {
         }
       })
     })
+  }
+  get correctedQuery(){
+    if(this.isSpellingMistake){
+      return `${this.correctQuery}?`;
+    } else {
+      return this.correctQuery;
+    }
   }
 
   /**

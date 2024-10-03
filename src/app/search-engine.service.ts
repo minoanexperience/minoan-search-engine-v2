@@ -12,6 +12,7 @@ export class SearchEngineService {
   showLoader = new BehaviorSubject(false);
   showLoaderText = new BehaviorSubject('');
   promptLoader = false;
+  modalLoader: boolean = false;
   pageNumber = 1;
 
   RESULT_PRODUCT_COUNT : number = 0;

@@ -16,7 +16,7 @@
       </button>
     </div>
   </div>
-  <h5 *ngIf="invalidProducts" class="heading-5">{{correctQuery}}</h5>
+  <h5 *ngIf="invalidProducts || isSpellingMistake" class="heading-5"><span *ngIf="isSpellingMistake">Did you mean </span><span [ngClass]="{'query' : isSpellingMistake}">{{correctedQuery}}</span></h5>
 <!--  <div class="row">-->
 <!--&lt;!&ndash;    <div class="brands-heading">&ndash;&gt;-->
 <!--&lt;!&ndash;      <p class="search_result_wrap">&ndash;&gt;-->
