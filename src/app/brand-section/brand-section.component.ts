@@ -114,9 +114,7 @@ export class BrandSectionComponent {
           this.brandsFetched = true;
           this.invalidProducts = searchCall ? !response.results && response.corrected_query !== '' : this.invalidProducts;
           this.correctQuery = searchCall ? response.corrected_query : this.correctQuery;
-          if(!this.invalidProducts && this.correctQuery !== ''){
-            this.isSpellingMistake = true;
-          }
+          this.isSpellingMistake = !this.invalidProducts && this.correctQuery !== ''
           console.log('After call : ');
           console.log('invalid products : ', this.invalidProducts);
           console.log('corrected query : ', this.correctQuery);
