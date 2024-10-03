@@ -3,14 +3,21 @@
 @import "primeng/resources/primeng.css";
 
 @font-face {
-  font-family: 'itc_souvenir_stdlight';
-  src: url('assets/souvenirstd-light-webfont.woff2') format('woff2');
-  font-weight: 300;
+  font-family: 'Helvetica Neue md';
+  src:url("assets/HelveticaNeue-Medium-11.3544c501d5c407fcb906.ttf");
   font-style: normal;
 }
 @font-face {
-  font-family: 'Helvetica Neue md';
-  src:url("assets/HelveticaNeue-Medium-11.3544c501d5c407fcb906.ttf");
+  font-family: 'Helvetica Neue';
+  src:url("assets/fonts/Helvetica/5664093/08b57253-2e0d-4c12-9c57-107f6c67bc49.woff2") format("woff2"),url("assets/fonts/Helvetica/5664093/08edde9d-c27b-4731-a27f-d6cd9b01cd06.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'itc_souvenir_stdlight';
+  src: url('assets/fonts/ITC_Souvenir/souvenirstd-light-webfont.woff2') format('woff2'), url('assets/fonts/ITC_Souvenir/souvenirstd-light-webfont.woff') format('woff');
+  font-weight: 300;
   font-style: normal;
 }
 
@@ -41,7 +48,108 @@ body {
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap:2rem
+  gap:2rem;
+  font-family: 'Helvetica Neue';
+}
+
+.pagination_wrapper{
+  text-align: center;
+  padding-bottom: 30px;
+  .page_info{
+    font-style: normal;
+    font-weight: 400;
+    line-height: 22px;
+    color:#96999F;
+  }
+  .pagination{
+    margin-bottom: 20px;
+    li{
+      margin: 0 4px;
+      &.active{
+        a{
+          background: #DC5A4B;
+          color:#fff;
+          border:1px solid #DC5A4B;
+          &:hover{
+            background:#DC5A4B;
+          }
+        }
+      }
+      a{
+        min-width: 32px;
+        height: 32px;
+        padding: 0 3px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #E0E1E5;
+        border-radius: 4px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 22px;
+        color:#96999F;
+        transition: all 0.2s;
+        &:focus{
+          outline: none;
+          box-shadow: none;
+        }
+        &:hover{
+          background: #F5F5F5;
+        }
+
+        &[aria-label="Previous"]{
+          background: transparent;
+          border: none;
+          min-width:32px !important;
+          height: 32px;
+          display: flex;
+          align-items:center !important;
+          svg path{
+            fill:#96999F;
+          }
+          &:hover{
+            svg path{
+              fill:#DC5A4B;
+            }
+          }
+        }
+        &[aria-label="Next"]{
+          background: transparent;
+          border: none;
+          min-width:32px !important;
+          height: 32px;
+          display: flex;
+          align-items:center !important;
+          &:hover{
+            svg path{
+              fill:#DC5A4B;
+            }
+          }
+          svg path{
+            fill:#96999F;
+          }
+        }
+
+        &[aria-disabled="true"]{
+          background: transparent;
+          border: none;
+          padding: 0;
+          min-width:24px;
+          height: 32px;
+          display: flex;
+          align-items: flex-end;
+
+          svg path{
+            fill:#E0E1E5;
+          }
+        }
+      }
+    }
+  }
+}
+
+.selection-pagination {
+  padding-top: 25px;
 }
 
 .product_modal_wrapper{
