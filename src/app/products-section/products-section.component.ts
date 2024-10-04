@@ -1,7 +1,7 @@
 import {Component, ElementRef, OnDestroy, ViewChild} from '@angular/core';
 import {Product} from "../type";
 import {NgbPaginationModule} from "@ng-bootstrap/ng-bootstrap";
-import {NgClass, NgFor, NgIf, SlicePipe} from "@angular/common";
+import {NgClass, NgFor, NgIf, NgOptimizedImage, SlicePipe} from "@angular/common";
 import {SearchEngineService} from "../search-engine.service";
 import {Subscription} from "rxjs";
 import {SkeletonModule} from "primeng/skeleton";
@@ -10,7 +10,7 @@ import {DialogModule} from "primeng/dialog";
 @Component({
   selector: 'app-products-section',
   standalone: true,
-  imports: [NgbPaginationModule, SlicePipe, NgIf, SkeletonModule, DialogModule, NgClass, NgFor],
+  imports: [NgbPaginationModule, SlicePipe, NgIf, SkeletonModule, DialogModule, NgClass, NgFor, NgOptimizedImage],
   templateUrl: './products-section.component.html',
   styleUrl: './products-section.component.scss'
 })

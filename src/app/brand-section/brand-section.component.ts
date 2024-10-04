@@ -40,8 +40,8 @@ export class BrandSectionComponent {
    */
   onEnterKeyInSearch(event: any, element: HTMLInputElement): void {
     if (event.keyCode === 13) {
-      this.fetchProductAndBrands();
-      element.blur();
+      this.fetchProductAndBrands(true);
+      element?.blur();
     }
   }
 
@@ -59,7 +59,8 @@ export class BrandSectionComponent {
   /**
    *
    */
-  removeFilter(){
+  removeFilter(event?: HTMLElement){
+    event?.blur();
     this.searchKeyword = '';
   }
 
@@ -71,9 +72,11 @@ export class BrandSectionComponent {
   /**
    * fetch brands and product for search query
    * @param searchCall
+   * @param event
    */
-  async fetchProductAndBrands(searchCall: boolean = true){
+  async fetchProductAndBrands(searchCall: boolean = true, event?: HTMLElement){
     // this.brandsLoader = true;
+    event?.blur();
     if(searchCall){
       this.searchService.updateLoader(searchCall);
       this.searchService.updateLoaderText('Hang tight, we are fetching products for you...');
@@ -99,8 +102,6 @@ export class BrandSectionComponent {
    * @param searchCall
    */
   async onSearchProducts(searchCall: boolean) {
-    // this.searchService.updateLoader(true);
-    // this.searchService.updateLoaderText('Hang tight, we are fetching products for you....')
     console.log('searchCall: ', searchCall);
     console.log('Before call : ');
     console.log('invalid products : ', this.invalidProducts);
