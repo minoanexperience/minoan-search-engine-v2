@@ -52,7 +52,7 @@ export class SearchEngineService {
    * @param requestBody
    */
   getSearchedProducts(requestBody: any): Observable<any> {
-    return this.http.post(`${environment.apiUrl}/predict_products`, requestBody).pipe(
+    return this.http.post(`${environment.apiUrl}/predict_re_products`, requestBody).pipe(
       take(1),
       map((response : any) => response),
       catchError((err) => {
