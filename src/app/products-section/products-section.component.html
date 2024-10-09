@@ -10,13 +10,18 @@
       <div  class="row">
         @for (product of productsList | slice: skip : page * limit; track getId(product.ID)){
           <div class="col-3">
-            @defer{
               <div class="card_ui_product" (click)="onProductDetailsModalShow(product)">
                 <div class="product-card">
                     <div class="product-card_inner">
-                      <div class="product_img_wrapper">
-                        <img loading="lazy" class="product-img" [src]="product?.PRODUCT_IMAGE_URL ? product.PRODUCT_IMAGE_URL : PLACEHOLDER_URL" alt="{{product?.PRODUCT_NAME}}">
-                      </div>
+                      @defer{
+                        <div class="product_img_wrapper">
+                          <img loading="lazy" class="product-img" [src]="product?.PRODUCT_IMAGE_URL ? product.PRODUCT_IMAGE_URL : PLACEHOLDER_URL" alt="{{product?.PRODUCT_NAME}}">
+                        </div>
+                      } @placeholder (minimum 1s){
+                        <div [style.margin-bottom.px]='20'>
+                          <p-skeleton   class="mb-2" height="250px" width="280px"></p-skeleton>
+                        </div>
+                      }
                       <div class="content_wrapper">
                         <div class="product_content_section">
                           <p class="brand-name">{{product?.BRAND_NAME}}</p>
@@ -31,11 +36,6 @@
                   </div>
 
               </div>
-            } @placeholder (minimum 3s){
-              <div [style.margin-bottom.px]='20'>
-                <p-skeleton   class="mb-2" height="450px" width="280px"></p-skeleton>
-              </div>
-            }
           </div>
         }
       </div>
